@@ -3,7 +3,7 @@ import  lab1.list.node.*;
 
 public class List {
     private int size;
-    private Node head;
+    public Node head;
 
     public List() {
         this.size = 0;
@@ -121,7 +121,7 @@ public class List {
                 if (tmp.next == null)
                     System.out.print(tmp.data);
                 else
-                    System.out.print(tmp.data + " ");
+                    System.out.print(tmp.data + ", ");
                 tmp = tmp.next;
             }
             System.out.println("]");

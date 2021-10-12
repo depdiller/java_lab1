@@ -13,116 +13,125 @@ public class Map {
     }
 
     public void put(Object key, Object value) {
-        // check if there is already pair with such key
-        MapPair newPair = new MapPair(key, value);
-        this.mapList.add(newPair);
-
-    }
-}
-
-/*
-package map;
-
-public class Map<T, V> {
-
-    private MapEl[] mapList;
-    private int size;
-
-    public Map() {
-        this.mapList = new MapEl[8];
-        this.size = 0;
-    }
-
-    public void put(T key, V value) {
-        MapEl newEl = new MapEl(key, value);
-        if (size < this.mapList.length) {
-            this.mapList[size] = newEl;
-            ++this.size;
+        /* check if there is already pair with such key
+        and replace it */
+        Node tmp = this.keyNode(key);
+        if (tmp != null) {
+            ((MapPair) tmp.data).value = value;
         }
         else {
-            this.mapList = copyAndResize(this.mapList, this.size + 1);
-            this.mapList[this.size++] = newEl;
+            MapPair newPair = new MapPair(key, value);
+            this.mapList.add(newPair);
+            ++this.size;
         }
     }
 
-    private static MapEl[] copyAndResize(MapEl[] list, int newLength) {
-        MapEl[] resizedL = new MapEl[newLength];
-        for (int i = 0; i < list.length; ++i) {
-            resizedL[i] = list[i];
+    public boolean keyContains(Object key) {
+        Node tmp = mapList.head;
+        while (tmp != null) {
+            if (((MapPair) tmp.data).getKey().equals(key))
+                return true;
+            tmp = tmp.next;
         }
-        return resizedL;
+        return false;
     }
 
-    public MapEl get(T key) {
-        for (int i = 0; i < this.mapList.length; ++i) {
-            if (this.mapList[i].key == key) {
-                MapEl el = new MapEl(key, this.mapList[i].key);
-                return el;
-            }
+    private Node keyNode(Object key) {
+        Node tmp = mapList.head;
+        while (tmp != null) {
+            if (((MapPair) tmp.data).getKey().equals(key))
+                return tmp;
+            tmp = tmp.next;
         }
         return null;
     }
 
-    public MapEl get(T key, MapEl bydefault) {
-        for (int i = 0; i < this.mapList.length; ++i) {
-            if (this.mapList[i].key == key) {
-                MapEl el = new MapEl(key, this.mapList[i].key);
-                return el;
-            }
+    public void printMap() {
+        System.out.print("{");
+        Node tmp = this.mapList.head;
+        while (tmp != null) {
+            if (tmp.next == null)
+                System.out.print(((MapPair)tmp.data).key + ":" + ((MapPair)tmp.data).value);
+            else
+                System.out.print(((MapPair)tmp.data).key + ":" + ((MapPair)tmp.data).value + ", ");
+            tmp = tmp.next;
+        }
+        System.out.println("}");
+    }
+
+    public Object get(Object key) {
+        Node tmp = keyNode(key);
+        if (tmp != null) {
+            return ((MapPair) tmp.data).key;
+        }
+        return null;
+    }
+
+    public Object get(Object key, Object bydefault) {
+        Node tmp = keyNode(key);
+        if (tmp != null) {
+            return ((MapPair) tmp.data).key;
         }
         return bydefault;
     }
 
-    public MapEl remove(T key) {
-
+    public Object remove(Object key) {
+        int delInd = indexOfNode(key);
+        Node tmp;
+        if (delInd != -1) {
+            tmp = this.mapList.get(delInd);
+            this.mapList.remove(delInd);
+            return ((MapPair) tmp.data).value;
+        }
+        else
+            return null;
     }
 
-    public boolean keyContains(T key) {
+    private int indexOfNode(Object key) {
+        Node tmp = mapList.head;
         for (int i = 0; i < this.size; ++i) {
-            if (this.mapList[i].key == key) {
-                return true;
-            }
+            if (((MapPair) tmp.data).getKey().equals(key))
+                return i;
+            tmp = tmp.next;
         }
-        return false;
+        return -1;
     }
 
     public List getKeys() {
-
+        List keys = new List();
+        Node tmp = mapList.head;
+        while (tmp != null) {
+            keys.add(((MapPair) tmp.data).key);
+            tmp = tmp.next;
+        }
+        return keys;
     }
 
     public List getValues() {
-
+        List values = new List();
+        Node tmp = mapList.head;
+        while (tmp != null) {
+            values.add(((MapPair) tmp.data).value);
+            tmp = tmp.next;
+        }
+        return values;
     }
 
     public List getEntries() {
-
+        List entries = new List();
+        List pair;
+        Node tmp = mapList.head;
+        while (tmp != null) {
+            pair = new List();
+            pair.add(((MapPair) tmp.data).key);
+            pair.add(((MapPair) tmp.data).value);
+            entries.add(pair);
+            tmp = tmp.next;
+        }
+        return entries;
     }
 
-    public int size() {
-        return this.size;
-    }
+    public int size() { return this.size; }
 
-    public boolean isEmpty() {
-        if (this.size == 0)
-            return true;
-        return false;
-    }
+    public boolean isEmpty() {return this.size == 0;}
 }
-//2. Реализовать словарь (map)
-//        Операции
-//        - Положить по ключу значение:          public void put(Object key, Object value);
-//        - Получить по ключу:                   public Object get(Object key);
-//        - Получить по ключу,                   public Object get(Object key, Object bydefault);
-//        если значение null, тогда надо
-//        вернуть значение по умолчанию,
-//        которое задается вторым параметром.
-//        Значение по умолчанию необходимо
-//        сохранить.
-//        - Удалить по ключу, возвращает текущее public Object remove(Object key);
-//        значение
-//        - Проверить наличие ключа:             public boolean keyContains(Object key);
-//        - Получить список ключей:              public List getKeys();
-//        - Получить список значений:            public List getValues();
-//        - Получить список пар: ключ, значение: public List getEntries();
-//        - Размер словаря:                      public int size();
-//        - Пустой или нет:                      public boolean isEmpty();*/

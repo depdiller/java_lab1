@@ -13,4 +13,8 @@ public class MapPair {
         this.key = key;
         this.value = value;
     }
+
+    public Object getKey() {
+        return this.key;
+    }
 }
