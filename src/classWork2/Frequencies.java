@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Frequencies {
     public static void main(String[] args) {
+        String newStr = "";
         Scanner in = new Scanner(System.in);
         String line = in.nextLine();
         String[] words = line.split(" ");
@@ -17,9 +18,13 @@ public class Frequencies {
                 int newCount = ((int)((MapPair)tmp.data).value) + 1;
                 aMap.put(word, newCount);
             }
-            else
+            else {
                 aMap.put(word, 1);
+                newStr = newStr + word + " ";
+            }
         }
         aMap.printMap();
+        System.out.println(newStr);
     }
+    // новая строка без повторений
 }

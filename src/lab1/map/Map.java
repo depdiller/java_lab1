@@ -12,6 +12,10 @@ public class Map {
         this.size = 0;
     }
 
+    public List getMapList() {
+        return this.mapList;
+    }
+
     public void put(Object key, Object value) {
         /* check if there is already pair with such key
         and replace it */

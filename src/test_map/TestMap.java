@@ -23,5 +23,6 @@ public class TestMap {
         aMap.getKeys().printList();
         aMap.getValues().printList();
         aMap.getEntries().printList();
+        // переопределить toString для нормального вывода
     }
 }
