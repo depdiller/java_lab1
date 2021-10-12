@@ -36,7 +36,7 @@ public class Map {
         return false;
     }
 
-    private Node keyNode(Object key) {
+    public Node keyNode(Object key) {
         Node tmp = mapList.head;
         while (tmp != null) {
             if (((MapPair) tmp.data).getKey().equals(key))

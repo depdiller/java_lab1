@@ -13,11 +13,11 @@ public class TestListMerge {
         aList.add(8);
         aList.printList();
 
-        aList.add(2);
-        aList.add(4);
-        aList.add(9);
-        aList.add(10);
-        aList.printList();
+        bList.add(2);
+        bList.add(4);
+        bList.add(9);
+        bList.add(10);
+        bList.printList();
 
         aList.merge(bList.head).printList();
     }
